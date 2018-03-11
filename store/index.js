@@ -2,7 +2,8 @@ import Vuex from 'vuex'
 
 const store = () => new Vuex.Store({
     state: {
-        gamePlayFlag: false
+        gamePlayFlag: false,
+        gameInformation: Object
     }
 })
 

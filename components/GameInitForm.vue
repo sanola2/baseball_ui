@@ -27,7 +27,8 @@ export default {
     methods: {
         submit() {
             axios.post(process.env.baseUrl + '/init/', querystring.stringify(this.form)).then(response => {
-                this.$store.state.gamePlayFlag = true;
+                this.$store.state.gamePlayFlag = true
+                this.$store.state.gameInformation = response
             }).catch(error => {
                 alert("error : " + error)
                 alert("errorre : " + error.response)
