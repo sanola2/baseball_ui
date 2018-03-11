@@ -1,43 +1,34 @@
 <template>
-  <section class="container">
-    <div>
-      <app-logo/>
-      <h1 class="title">
-        baseball
-      </h1>
-      <h2 class="subtitle">
-        Toy project
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green">Documentation</a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey">GitHub</a>
-      </div>
+  <div class="container">
+    <h1 class="title">Baseball Game</h1><br>
+    <div v-if="!$store.state.gamePlayFlag">
+      <game-init-form/><br>
     </div>
-  </section>
+    <div v-if='$store.state.gamePlayFlag'>
+      <game-view/>
+    </div>
+    <button @click="bb">버튼</button>
+  </div>
 </template>
 
 <script>
-import AppLogo from '~/components/AppLogo.vue'
+import GameInitForm from '~/components/GameInitForm.vue'
+import GameView from '~/components/GameView.vue'
 
 export default {
   components: {
-    AppLogo
+    GameInitForm, GameView
+  },
+  methods: {
+    bb() {
+      this.$store.state.gamePlayFlag = true
+    }
   }
 }
 </script>
 
 <style>
 .container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   text-align: center;
 }
 
@@ -56,9 +47,5 @@ export default {
   color: #526488;
   word-spacing: 5px;
   padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
 }
 </style>

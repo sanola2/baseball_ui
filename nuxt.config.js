@@ -13,6 +13,9 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
+  env: {
+    baseUrl: process.env.baseUrl || 'http://localhost:8080/api/'
+  },
   /*
   ** Customize the progress bar color
   */
@@ -21,6 +24,7 @@ module.exports = {
   ** Build configuration
   */
   build: {
+    vendor: ['axios'],
     /*
     ** Run ESLint on save
     */
