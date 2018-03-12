@@ -8,6 +8,7 @@
             <br>
         </form>
         <button @click="submit()">확인</button>
+        <br><br><button @click="test()">테스트</button>
     </div>
 </template>
 
@@ -27,11 +28,14 @@ export default {
     methods: {
         submit() {
             axios.post(process.env.baseUrl + '/init/', querystring.stringify(this.form)).then(response => {
-                this.$store.state.gamePlayFlag = true
-                this.$store.state.gameInformation = response
+                if(response.data.errorCode == "200") {
+                    this.$store.state.gamePlayFlag = true
+                    this.$store.state.gameInformation = response
+                } else {
+                    alert("Error!!")
+                }
             }).catch(error => {
                 alert("error : " + error)
-                alert("errorre : " + error.response)
             })
         }
     }

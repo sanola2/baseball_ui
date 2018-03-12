@@ -21,7 +21,8 @@ export default {
   },
   methods: {
     bb() {
-      this.$store.state.gamePlayFlag = true
+      regex = /[0-9]/;
+      console.log(regex.test("1"))
     }
   }
 }
