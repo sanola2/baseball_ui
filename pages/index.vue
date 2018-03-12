@@ -7,7 +7,7 @@
     <div v-if='$store.state.gamePlayFlag'>
       <game-view/>
     </div>
-    <button @click="bb">버튼</button>
+  <!--<button @click="bb">버튼</button>-->
   </div>
 </template>
 
@@ -21,8 +21,7 @@ export default {
   },
   methods: {
     bb() {
-      regex = /[0-9]/;
-      console.log(regex.test("1"))
+      console.log('^.^')
     }
   }
 }
