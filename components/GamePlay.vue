@@ -7,11 +7,18 @@
            <input v-model="numbers[2]" type="number" min="1" max="9" @keyup="removeChar($event)">
       </form>
       <button class="gameplay-submit-button" type="submit" @click="bindNumbers()">정답 제출</button>
+      <br><br>
+      <div class="gameplay-log">
+        <div v-for="log in logs" :key="log">
+            <game-log :log-data=log />
+        </div>
+      </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import GameLog from '~/components/GameLog.vue'
 
 export default {
     data: function() {
@@ -19,9 +26,12 @@ export default {
             numbers: [],
             answer: {
                 params: {
+                  gameIdx: this.$store.state.gameInformation.data.gameInfo.idx,
                   answer: ""
                 }
-            }
+            },
+            logs: [],
+            gameCount: 0
         }
     },
     methods: {
@@ -47,11 +57,29 @@ export default {
         },
         submitAnswer() {
             axios.get(process.env.baseUrl + '/answer/', this.answer).then(response => {
-                console.log("success")
+                if(response.data.errorCode == 200) {
+                    this.gameCount++
+                    this.addDataToLogs(response.data.strikeCnt, response.data.ballCnt);
+                }
+                //to-do answer 컨트롤러에서 반환한걸로 판단해서 카운트 하나 늘리고 게임결과값 추가해서 addDataToLogs 에 넣어준다.
+                
             }).catch(error => {
                 alert("error: " + error)
             })
+        },
+        addDataToLogs(strikeCnt, ballCnt) {
+            this.logs.push({
+                gameNumber: this.gameCount,
+                numbers: [this.numbers[0], this.numbers[1], this.numbers[2]],
+                gameResult: {
+                    strikeCnt: strikeCnt,
+                    ballCnt: ballCnt
+                }
+            })
         }
+    },
+    components: {
+        GameLog
     }
 }
 </script>
