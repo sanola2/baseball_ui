@@ -2,7 +2,6 @@
   <div>
       <p class="gameview-text">{{count}}번째 게임 시작합니다</p><br>
       <game-play/><br>
-      <button>현재 게임 상태 요청</button>
   </div>
 </template>
 

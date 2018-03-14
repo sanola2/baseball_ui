@@ -1,5 +1,6 @@
 <template>
   <div>
+      <button @click="callGameInfo()">현재 게임 상태 요청</button><br><br>
       <p>각 칸에 숫자를 입력해 주세요!</p>
       <form>
            <input v-model="numbers[0]" type="number" min="1" max="9" @keyup="removeChar($event)">
@@ -9,7 +10,7 @@
       <button class="gameplay-submit-button" type="submit" @click="bindNumbers()">정답 제출</button>
       <br><br>
       <div class="gameplay-log">
-        <div v-for="log in logs" :key="log">
+        <div v-for="log in logs" :key="log.gameNumber">
             <game-log :log-data=log />
         </div>
       </div>
@@ -31,7 +32,16 @@ export default {
                 }
             },
             logs: [],
-            gameCount: 0
+            gameCount: 0,
+            bestHistory: [{
+                gameNumber: -1,
+                numbers: [],
+                gameResult: {
+                    strikeCnt: -1,
+                    ballCnt: -1
+                },
+                point: -1
+            }]
         }
     },
     methods: {
@@ -61,8 +71,6 @@ export default {
                     this.gameCount++
                     this.addDataToLogs(response.data.strikeCnt, response.data.ballCnt);
                 }
-                //to-do answer 컨트롤러에서 반환한걸로 판단해서 카운트 하나 늘리고 게임결과값 추가해서 addDataToLogs 에 넣어준다.
-                
             }).catch(error => {
                 alert("error: " + error)
             })
@@ -74,8 +82,38 @@ export default {
                 gameResult: {
                     strikeCnt: strikeCnt,
                     ballCnt: ballCnt
-                }
+                },
+                point: strikeCnt*3 + ballCnt*1
             })
+            this.getBestHistory();
+        },
+        getBestHistory() {
+            for(let i in this.logs) {
+                if(this.bestHistory[0].point < this.logs[i].point) {
+                    this.bestHistory = []
+                    this.bestHistory.push(this.logs[i])
+                } else if(this.bestHistory[0].point == this.logs[i].point) {
+                    // 최고기록이 중복으로 리스트에 담기는것 방지
+                    var flag = true
+                    for(let j in this.bestHistory) {
+                        if(this.bestHistory[j].gameNumber == this.logs[i].gameNumber)
+                            flag = false
+                    }
+                    if(flag)
+                        this.bestHistory.push(this.logs[i])
+                }
+            }
+            console.log(this.bestHistory.length)
+        },
+        callGameInfo() {
+            let message = ""
+            message = "최대 시도 가능 횟수 : " + this.$store.state.maxTryNumber + "\n현재까지 시도한 횟수 : " + this.gameCount + "\n\n현재 게임의 최고 기록\n"
+            for(let i in this.bestHistory) {
+                if(this.bestHistory[i].point > -1)
+                    message = message.concat(this.bestHistory[i].gameNumber + "번째 시도, 제출 정답 : " + this.bestHistory[i].numbers[0] + ", " + this.bestHistory[i].numbers[1] + ", " + this.bestHistory[i].numbers[2] + "\n")
+            }
+
+            alert(message)
         }
     },
     components: {

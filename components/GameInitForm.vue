@@ -29,6 +29,7 @@ export default {
         submit() {
             axios.post(process.env.baseUrl + '/init/', querystring.stringify(this.form)).then(response => {
                 if(response.data.errorCode == "200") {
+                    this.$store.state.maxTryNumber = this.form.maxTryNumber
                     this.$store.state.gamePlayFlag = true
                     this.$store.state.gameInformation = response
                 } else {
