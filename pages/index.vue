@@ -7,7 +7,7 @@
     <div v-if='$store.state.gamePlayFlag'>
       <game-view/>
     </div>
-  <!--<button @click="bb">버튼</button>-->
+  <!--<button @click="bb" >버튼</button>-->
   </div>
 </template>
 

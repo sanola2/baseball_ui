@@ -8,7 +8,6 @@
             <br>
         </form>
         <button @click="submit()">확인</button>
-        <br><br><button @click="test()">테스트</button>
     </div>
 </template>
 

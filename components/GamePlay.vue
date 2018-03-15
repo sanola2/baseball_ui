@@ -7,12 +7,16 @@
            <input v-model="numbers[1]" type="number" min="1" max="9" @keyup="removeChar($event)">
            <input v-model="numbers[2]" type="number" min="1" max="9" @keyup="removeChar($event)">
       </form>
-      <button class="gameplay-submit-button" type="submit" @click="bindNumbers()">정답 제출</button>
+      <button class="gameplay-submit-button" type="submit" @click="bindNumbers()" :disabled="submitDisabled">정답 제출</button>
       <br><br>
       <div class="gameplay-log">
         <div v-for="log in logs" :key="log.gameNumber">
             <game-log :log-data=log />
         </div>
+      </div>
+      <div v-if="!isGamePlaying">
+          <h3 style="margin-top: 13px;">게임이 종료 되었습니다!!</h3>
+          <button @click="quitGame()">게임 종료</button>
       </div>
   </div>
 </template>
@@ -41,13 +45,15 @@ export default {
                     ballCnt: -1
                 },
                 point: -1
-            }]
+            }],
+            submitDisabled: false,
+            isGamePlaying: true
         }
     },
     watch: {
         gameCount: function() {
             if(this.gameCount >= this.$store.state.maxTryNumber) {
-                this.quitGame()
+                this.quitGamePlay()
             }
         }
     },
@@ -76,6 +82,9 @@ export default {
             axios.get(process.env.baseUrl + '/answer/', this.answer).then(response => {
                 if(response.data.errorCode == 200) {
                     this.gameCount++
+                    if(response.data.strikeCnt == 3) { //스트라이크 3 으로 정답을 맞추면 종료
+                        this.quitGamePlay()
+                    }
                     this.addDataToLogs(response.data.strikeCnt, response.data.ballCnt);
                 }
             }).catch(error => {
@@ -110,7 +119,6 @@ export default {
                         this.bestHistory.push(this.logs[i])
                 }
             }
-            console.log(this.bestHistory.length)
         },
         callGameInfo() {
             let message = ""
@@ -122,10 +130,12 @@ export default {
 
             alert(message)
         },
+        quitGamePlay() {
+            this.submitDisabled = true
+            this.isGamePlaying = false
+        },
         quitGame() {
-            alert()
             this.$store.state.gamePlayFlag = false
-        
         }
     },
     components: {
