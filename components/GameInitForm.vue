@@ -32,10 +32,10 @@ export default {
                     this.$store.state.gamePlayFlag = true
                     this.$store.state.gameInformation = response
                 } else {
-                    alert("Error!!")
+                    alert("잘못된 요청입니다!")
                 }
             }).catch(error => {
-                alert("error : " + error)
+                alert("다시 한번 확인해 주십시오")
             })
         }
     }

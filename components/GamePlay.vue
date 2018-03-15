@@ -15,7 +15,7 @@
         </div>
       </div>
       <div v-if="!isGamePlaying">
-          <h3 style="margin-top: 13px;">게임이 종료 되었습니다!!</h3>
+          <h3 style="margin-top: 13px; color: red;">게임이 종료 되었습니다!!</h3>
           <button @click="quitGame()">게임 종료</button>
       </div>
   </div>
