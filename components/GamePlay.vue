@@ -44,6 +44,13 @@ export default {
             }]
         }
     },
+    watch: {
+        gameCount: function() {
+            if(this.gameCount >= this.$store.state.maxTryNumber) {
+                this.quitGame()
+            }
+        }
+    },
     methods: {
         //숫자 입력이 2자리 넘어가면 한자리만 남기고 숫자 삭제
         removeChar(event) {
@@ -114,6 +121,11 @@ export default {
             }
 
             alert(message)
+        },
+        quitGame() {
+            alert()
+            this.$store.state.gamePlayFlag = false
+        
         }
     },
     components: {
