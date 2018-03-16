@@ -81,9 +81,6 @@ export default {
                 }
                 this.answer.params.answer += this.numbers[i]
             }
-            console.log("뭐지")
-            console.log(this.answer.params.answer)
-            console.log(this.answer.params.answer.length)
             if(this.answer.params.answer.length != this.$store.state.probNum || checkZero) {
                 alert("각 숫자는 1~9까지 한자리의 숫자만 넣어 주십시오.")
                 this.numbers = []
