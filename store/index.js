@@ -4,7 +4,8 @@ const store = () => new Vuex.Store({
     state: {
         gamePlayFlag: false,
         gameInformation: Object,
-        maxTryNumber: Number
+        maxTryNumber: Number,
+        probNum: Number
     }
 })
 

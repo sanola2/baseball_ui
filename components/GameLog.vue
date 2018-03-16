@@ -1,10 +1,16 @@
 <template>
   <div>
-    {{ logData.gameNumber }}회차 : {{ logData.numbers[0] }}, {{ logData.numbers[1] }}, {{ logData.numbers[2] }} =>
-    <span v-if="logData.gameResult.strikeCnt == 3" style="color: green;">
+    {{ logData.gameNumber }}회차 : 
+    <span v-for="i in logData.numbers.length" :key="i">
+        {{ logData.numbers[i] }}
+    </span>
+    <span>
+        =>
+    </span>
+    <span v-if="logData.gameResult.strikeCnt == $store.state.probNum" style="color: green">
         " WIN "
     </span>
-    <span v-else-if="logData.gameResult.strikeCnt == 0 && logData.gameResult.ballCnt == 0" style="color: red;">
+    <span v-else-if="logData.gameResult.strikeCnt == 0 && logData.gameResult.ballCnt == 0" style="color: red">
         " OUT "
     </span>
     <span v-else>
